@@ -19,7 +19,7 @@
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
   <style>
-    /* CSS 变量定义：颜色、尺寸与特效 */
+    /* CSS 变量定义：包含颜色、间距与阴影配置 */
     :root {
       --spacing-page-h: 1.5rem;
       --header-inner-height: 62px;
@@ -33,8 +33,8 @@
       --text-secondary: #8e8e93;
       --text-tertiary: #aeaeb2;
       --color-accent: #007aff;
-      --border-light: rgba(0, 0, 0, 0.05);
       --border-separator: #c6c6c8;
+      --border-dashed: #d1d1d6;
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
       --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.08);
       --radius-md: 12px;
@@ -54,17 +54,15 @@
         --text-secondary: #8e8e93;
         --text-tertiary: #636366;
         --color-accent: #0a84ff;
-        --border-light: rgba(255, 255, 255, 0.1);
         --border-separator: #38383a;
+        --border-dashed: #3a3a3c;
         --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
         --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.4);
       }
     }
 
     /* 基础样式重置 */
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -74,7 +72,6 @@
     html {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
       background-color: var(--bg-body);
       color: var(--text-primary);
     }
@@ -87,9 +84,8 @@
       overscroll-behavior-y: none;
     }
 
-    /* 防止过度滚动显示背景色 */
-    body::before,
-    body::after {
+    /* 防止移动端橡皮筋效果露底 */
+    body::before, body::after {
       content: '';
       position: fixed;
       left: 0;
@@ -100,16 +96,10 @@
       background-color: var(--bg-body);
     }
 
-    body::before {
-      bottom: 100%;
-    }
+    body::before { bottom: 100%; }
+    body::after { top: 100%; }
 
-    body::after {
-      top: 100%;
-    }
-
-    input,
-    button {
+    input, button {
       font-family: inherit;
       border: none;
       outline: none;
@@ -167,7 +157,7 @@
       color: var(--text-secondary);
     }
 
-    /* 菜单按钮样式 */
+    /* 移动端菜单开关动画 */
     .menu-toggle {
       display: flex;
       flex-direction: column;
@@ -188,35 +178,22 @@
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .menu-toggle span:nth-child(1) {
-      width: 22px;
-    }
+    .menu-toggle span:nth-child(1) { width: 22px; }
+    .menu-toggle span:nth-child(2) { width: 16px; opacity: 1; }
+    .menu-toggle span:nth-child(3) { width: 22px; }
 
-    .menu-toggle span:nth-child(2) {
-      width: 16px;
-      opacity: 1;
-    }
-
-    .menu-toggle span:nth-child(3) {
-      width: 22px;
-    }
-
-    /* 菜单激活状态动画 */
     .menu-toggle.active span:nth-child(1) {
       transform: translateY(7.5px) rotate(45deg);
       background-color: var(--text-primary);
     }
 
-    .menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
     .menu-toggle.active span:nth-child(3) {
       transform: translateY(-7.5px) rotate(-45deg);
       background-color: var(--text-primary);
     }
 
-    /* 下拉菜单容器样式 */
+    /* 功能菜单列表 */
     .secondary-menu {
       position: absolute;
       top: calc(100% + 12px);
@@ -243,7 +220,6 @@
       transform: scale(1) translateY(0);
     }
 
-    /* 菜单项样式 */
     .menu-item {
       display: flex;
       align-items: center;
@@ -258,9 +234,7 @@
       cursor: pointer;
     }
 
-    .menu-item:hover {
-      background-color: var(--bg-body);
-    }
+    .menu-item:hover { background-color: var(--bg-body); }
 
     .menu-item-content {
       display: flex;
@@ -269,7 +243,7 @@
       flex-grow: 1;
     }
 
-    /* 图标通用样式 */
+    /* 图标样式处理 */
     .icon {
       width: 22px;
       height: 22px;
@@ -296,11 +270,9 @@
       mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z'/%3E%3C/svg%3E");
     }
 
-    #install-pwa {
-      display: none;
-    }
+    #install-pwa { display: none; }
 
-    /* 页面主体布局 */
+    /* 页面主容器布局 */
     .wrap {
       max-width: 1100px;
       margin: 0 auto;
@@ -310,14 +282,16 @@
       padding-bottom: calc(3rem + env(safe-area-inset-bottom));
     }
 
-    /* 公告栏样式 */
+    /* 滚动公告栏样式 */
     .announcement-banner {
       background-color: #fff9de;
       border: 1px solid #e1e4e8;
       border-radius: var(--radius-lg);
       margin-bottom: 1rem;
       position: relative;
-      min-height: 3.2rem;
+      height: 50px;
+      display: flex;
+      align-items: center;
       cursor: pointer;
       overflow: hidden;
     }
@@ -337,11 +311,10 @@
       height: 100%;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding: .5rem 1rem;
-      color: #1d1d1f;
-      font-size: .9rem;
+      padding: 0 16px;
+      font-size: 0.95rem;
       font-weight: 500;
+      color: #1d1d1f;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
       z-index: 0;
@@ -350,20 +323,13 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      .banner-item {
-        color: #e2e2e2;
-      }
+      .banner-item { color: #e2e2e2; }
     }
 
-    .banner-item.active {
-      opacity: 1;
-      z-index: 1;
-    }
+    .banner-item.active { opacity: 1; z-index: 1; }
 
-    /* 搜索框与标签样式 */
-    .search-box {
-      margin-bottom: 2rem;
-    }
+    /* 搜索框与筛选标签 */
+    .search-box { margin-bottom: 2rem; }
 
     #search {
       width: 100%;
@@ -418,7 +384,7 @@
       color: var(--text-primary);
     }
 
-    /* 插件列表与卡片样式 */
+    /* 插件卡片网格布局与样式 */
     .list {
       display: grid;
       gap: 1.5rem;
@@ -428,7 +394,6 @@
     .card {
       background: var(--bg-card);
       border-radius: var(--radius-lg);
-      padding: 1.2rem;
       text-decoration: none;
       color: inherit;
       position: relative;
@@ -454,16 +419,16 @@
       transition-duration: 0.1s;
     }
 
-    .card-inner-layout {
+    .card-top {
+      padding: 1.2rem 1.2rem 0.5rem 1.2rem;
       display: flex;
       align-items: flex-start;
-      gap: 1rem;
-      height: 100%;
+      gap: 12px;
     }
 
     .card-icon {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
       object-fit: cover;
       flex-shrink: 0;
@@ -472,24 +437,16 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      .card-icon {
-        background: #333;
-      }
+      .card-icon { background: #333; }
     }
 
-    .card-content {
+    .card-header-info {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
+      justify-content: flex-start;
+      gap: 6px;
     }
 
     .card-title {
@@ -499,39 +456,68 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.3;
     }
 
-    .card-update-time {
-      margin: 0 0 0.6rem;
-      font-size: 0.75rem;
-      color: var(--text-tertiary);
-      font-weight: 500;
+    .author-wrapper {
+      display: flex;
+      align-items: center;
+      min-height: 20px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .author-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background-color: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .author-avatar {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
     }
 
     .card-desc {
       font-size: 0.9rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.6;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
       word-break: break-word;
-      margin-bottom: 0.5rem;
+      padding: 0 1.2rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      border-top: 1px dashed var(--border-dashed);
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.01);
     }
 
     .card-tags {
-      margin-top: auto;
-      padding-top: 0.5rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .tag-item {
-      padding: 4px 10px;
-      font-size: 0.75rem;
+      padding: 3px 8px;
+      font-size: 0.7rem;
       font-weight: 600;
       color: var(--color-accent);
       background: rgba(0, 122, 255, 0.1);
@@ -545,6 +531,13 @@
       }
     }
 
+    .card-update-time {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
     .empty {
       text-align: center;
       color: var(--text-tertiary);
@@ -552,7 +545,6 @@
       grid-column: 1 / -1;
     }
 
-    /* 底部版权样式 */
     footer {
       text-align: center;
       font-size: 0.85rem;
@@ -564,23 +556,13 @@
 
     /* 桌面端大屏适配 */
     @media (min-width: 768px) {
-      :root {
-        --spacing-page-h: 2rem;
-      }
-
+      :root { --spacing-page-h: 2rem; }
       header {
         padding-left: 2rem;
         padding-right: 2rem;
       }
-
-      .header-title-block {
-        top: 50%;
-      }
-
-      header h1 {
-        font-size: 1.4rem;
-      }
-
+      .header-title-block { top: 50%; }
+      header h1 { font-size: 1.4rem; }
       .secondary-menu {
         display: flex !important;
         visibility: visible !important;
@@ -596,40 +578,24 @@
         align-items: center;
         gap: 0.3rem;
       }
-
-      .menu-toggle {
-        display: none;
-      }
-
+      .menu-toggle { display: none; }
       .menu-item {
         width: auto;
         padding: 8px;
         border-radius: 50%;
         gap: 2px;
       }
-
       .menu-item:hover {
         background-color: rgba(0, 0, 0, 0.05);
       }
-
       @media (prefers-color-scheme: dark) {
         .menu-item:hover {
           background-color: rgba(255, 255, 255, 0.1);
         }
       }
-
-      .menu-item-content span:not(.icon) {
-        display: none;
-      }
-
-      .menu-item-content {
-        gap: 0;
-      }
-
-      #install-pwa {
-        display: none !important;
-      }
-
+      .menu-item-content span:not(.icon) { display: none; }
+      .menu-item-content { gap: 0; }
+      #install-pwa { display: none !important; }
       .wrap {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -661,7 +627,6 @@
             <span>安装应用</span>
           </div>
         </div>
-
         <a href="https://t.me/BoEchoBot" target="_blank" class="menu-item" aria-label="Telegram" title="Telegram">
           <div class="menu-item-content">
             <span class="icon icon-telegram"></span>
@@ -705,12 +670,13 @@
   </div>
 
   <script>
-    /* 防止浏览器自动恢复滚动位置 */
+    // 手动处理滚动恢复，避免页面刷新后位置跳动
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
+
     (async () => {
-      /* PWA Service Worker 注册与安装逻辑 */
+      // Service Worker 注册与 PWA 安装事件处理
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err));
@@ -729,20 +695,16 @@
       installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
-        const {
-          outcome
-        } = await deferredPrompt.userChoice;
+        const { outcome } = await deferredPrompt.userChoice;
         console.log(`Install: ${outcome}`);
         deferredPrompt = null;
         installBtn.style.display = 'none';
       });
 
-      /* 配置文本常量 */
+      // 静态文本与配置对象
       const TEXT = {
         repoTitle: 'Loon 插件仓库',
         repoDesc: '点击插件卡片即可跳转安装插件',
-        telegram: 'Telegram',
-        github: 'GitHub',
         bannerWarning: '禁止在中华人民共和国境内平台公开传播本仓库内容以及将其用于任何商业或非法用途！如有发现，请向平台举报！',
         bannerDisclaimer: '本网站由个人制作与维护，与Loon官方无关。',
         bannerUpdateNotice: '若插件提示“Loon的版本过旧，插件功能受限”，请自行前往 App Store 进行软件更新。',
@@ -765,7 +727,7 @@
         loading: '正在加载…'
       };
 
-      /* 获取 DOM 元素 */
+      // 获取 DOM 元素引用
       const menuToggle = document.getElementById('menu-toggle');
       const secondaryMenu = document.getElementById('secondary-menu');
       const listEl = document.getElementById('list');
@@ -774,9 +736,14 @@
       const sectionTitleEl = document.getElementById('sectionTitle');
       const updateTimeEl = document.getElementById('updateTime');
 
-      /* 初始化公告栏 */
+      // 初始化滚动公告栏内容
       const bannerContainer = document.getElementById('announcementBanner');
-      const bannerMessages = [TEXT.bannerWarning, TEXT.bannerDisclaimer, TEXT.bannerUpdateNotice, TEXT.bannerRefreshNotice];
+      const bannerMessages = [
+        TEXT.bannerWarning,
+        TEXT.bannerDisclaimer,
+        TEXT.bannerUpdateNotice,
+        TEXT.bannerRefreshNotice
+      ];
       bannerMessages.forEach((message, index) => {
         const p = document.createElement('p');
         p.className = 'banner-item';
@@ -785,14 +752,18 @@
         bannerContainer.appendChild(p);
       });
 
-      /* 初始化页面文本 */
+      // 页面文本初始化
       document.querySelector('h1').textContent = TEXT.repoTitle;
       document.querySelector('header p').textContent = TEXT.repoDesc;
       searchEl.placeholder = TEXT.searchPlaceholder;
 
       document.querySelectorAll('.tab').forEach(btn => {
         const cat = btn.dataset.cat;
-        btn.textContent = TEXT[`cat${cat === 'all' ? 'All' : cat === '去广告' ? 'Adblock' : cat === '功能增强' ? 'Enhance' : cat === '解锁会员' ? 'Unlock' : 'Cron'}`];
+        const key = cat === 'all' ? 'All' :
+                    cat === '去广告' ? 'Adblock' :
+                    cat === '功能增强' ? 'Enhance' :
+                    cat === '解锁会员' ? 'Unlock' : 'Cron';
+        btn.textContent = TEXT[`cat${key}`];
       });
 
       document.querySelector('footer span').textContent = TEXT.updateTimeLabel;
@@ -800,11 +771,11 @@
       sectionTitleEl.textContent = TEXT.loading;
       document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
+      // 从 GitHub API 获取插件文件列表及内容
       let plugins = [];
       const GITHUB_REPO = 'sooyaaabo/Loon';
       const PLUGIN_DIR_PATH = 'Plugin';
 
-      /* 从 GitHub API 获取插件文件列表并解析内容 */
       try {
         const allFilesResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${PLUGIN_DIR_PATH}`);
         const allFiles = await allFilesResponse.json();
@@ -825,14 +796,38 @@
           const date = (text.match(/#!\s*date\s*=\s*(.+)/i) || [])[1]?.trim() || 'Unknown';
           const tagStr = (text.match(/#!\s*tag\s*=\s*(.+)/i) || [])[1]?.trim();
           const tags = tagStr ? tagStr.split(',').map(t => t.trim()).filter(Boolean) : [];
-          return {
-            url: file.download_url,
-            name,
-            desc,
-            icon,
-            date,
-            tags
-          };
+
+          // 解析作者信息（支持 Name[URL] 格式）
+          const authorLine = (text.match(/#!\s*author\s*=\s*(.+)/i) || [])[1]?.trim() || '';
+          let authors = [];
+
+          if (authorLine) {
+            const parts = authorLine.split(/,\s*/);
+            authors = parts.map(part => {
+              part = part.trim();
+              const match = part.match(/^([^\[]+)\[(.+)\]$/);
+              if (match) {
+                const authorName = match[1].trim();
+                const authorUrl = match[2].trim();
+                let avatarUrl = authorUrl;
+                if (authorUrl.includes('github.com') && !authorUrl.match(/\.(png|jpg|jpeg|gif)$/i)) {
+                  const userMatch = authorUrl.match(/github\.com\/([^\/]+)/);
+                  if (userMatch && userMatch[1]) {
+                    avatarUrl = `https://github.com/${userMatch[1]}.png`;
+                  } else {
+                    avatarUrl = `${authorUrl}.png`;
+                  }
+                } else if (!authorUrl.startsWith('http')) {
+                  avatarUrl = '';
+                }
+                return { name: authorName, avatar: avatarUrl };
+              } else {
+                return { name: part, avatar: `https://github.com/${encodeURIComponent(part)}.png` };
+              }
+            });
+          }
+
+          return { url: file.download_url, name, desc, icon, date, authors, tags };
         });
       } catch (error) {
         listEl.innerHTML = `<div class="empty">${TEXT.loadFailed(error.message)}</div>`;
@@ -840,7 +835,7 @@
         return;
       }
 
-      /* 获取仓库最近提交时间 */
+      // 获取 GitHub 仓库最近提交时间
       try {
         const commitsResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?path=${PLUGIN_DIR_PATH}`);
         const commits = await commitsResponse.json();
@@ -859,12 +854,15 @@
         updateTimeEl.textContent = TEXT.getFailed;
       }
 
-      /* 渲染插件列表 */
+      // 插件列表过滤与渲染逻辑
       function render(filterCat = 'all', kw = '') {
         const lowerKw = kw.toLowerCase();
         const filtered = plugins.filter(p => {
           const hitCat = filterCat === 'all' || p.tags.includes(filterCat);
-          const hitKw = !lowerKw || p.name.toLowerCase().includes(lowerKw) || p.tags.some(tag => tag.toLowerCase().includes(lowerKw));
+          const hitKw = !lowerKw ||
+                        p.name.toLowerCase().includes(lowerKw) ||
+                        p.tags.some(tag => tag.toLowerCase().includes(lowerKw)) ||
+                        p.authors.some(a => a.name.toLowerCase().includes(lowerKw));
           return hitCat && hitKw;
         });
 
@@ -881,23 +879,37 @@
           const card = document.createElement('a');
           card.className = 'card';
           card.href = `loon://import?plugin=${p.url}`;
-          const tagsHtml = p.tags.map(tag => `<span class="tag-item">${tag}</span>`).join(' ');
+
+          const tagsHtml = p.tags.map(tag => `<span class="tag-item">${tag}</span>`).join('');
           const descText = (p.desc === '暂无描述' || p.desc === 'No description available') ? TEXT.cardNoDesc : p.desc;
+
+          let authorsHtml = '';
+          if (p.authors && p.authors.length > 0) {
+            const imgs = p.authors.map(a =>
+              `<img src="${a.avatar}" class="author-avatar" alt="${a.name}" title="${a.name}" loading="lazy" onerror="this.style.display='none'">`
+            ).join('');
+            authorsHtml = `<div class="author-wrapper">${imgs}</div>`;
+          }
+
           card.innerHTML = `
-            <div class="card-inner-layout">
+            <div class="card-top">
               ${p.icon ? `<img src="${p.icon}" class="card-icon" alt="${p.name} icon" loading="lazy">` : ''}
-              <div class="card-content">
-                <div class="card-header"><h3 class="card-title">${p.name}</h3></div>
-                <p class="card-update-time">${TEXT.cardUpdateTime}${p.date}</p>
-                <p class="card-desc">${descText}</p>
-                <div class="card-tags">${tagsHtml}</div>
+              <div class="card-header-info">
+                <h3 class="card-title">${p.name}</h3>
+                ${authorsHtml}
               </div>
-            </div>`;
+            </div>
+            <p class="card-desc">${descText}</p>
+            <div class="card-footer">
+              <div class="card-tags">${tagsHtml}</div>
+              <p class="card-update-time">${p.date}</p>
+            </div>
+          `;
           listEl.appendChild(card);
         });
-      };
+      }
 
-      /* 绑定交互事件监听器 */
+      // 交互事件监听（菜单、点击、筛选、搜索）
       menuToggle.addEventListener('click', e => {
         e.stopPropagation();
         secondaryMenu.classList.toggle('active');
@@ -931,7 +943,7 @@
         render(tabsEl.querySelector('.tab.active').dataset.cat, searchEl.value);
       });
 
-      /* 公告栏滚动动画逻辑 */
+      // 公告栏自动滚动动画逻辑
       (() => {
         const bannerEl = document.getElementById('announcementBanner');
         const bannerItems = bannerEl.querySelectorAll('.banner-item');
@@ -955,9 +967,7 @@
             item.style.transition = `transform ${dur}s linear`;
             item.style.transform = `translateX(-${offset}px)`;
             await new Promise(r => {
-              item.addEventListener('transitionend', r, {
-                once: true
-              });
+              item.addEventListener('transitionend', r, { once: true });
             });
             await new Promise(r => setTimeout(r, 1000));
           } else {
@@ -996,7 +1006,7 @@
         startBannerLoop();
       })();
 
-      /* 初始化渲染 */
+      // 启动首次渲染
       if (plugins.length > 0) render('all', '');
     })();
   </script>
