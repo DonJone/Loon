@@ -437,7 +437,7 @@
       height: 100%;
     }
 
-    .card:hover {
+    .card:not(:has(.author-avatar:hover)):hover {
       transform: translateY(-6px) scale(1.005);
       box-shadow: var(--shadow-hover);
       background-color: var(--bg-card-hover);
@@ -446,7 +446,7 @@
       z-index: 10;
     }
 
-    .card:active {
+    .card:not(:has(.author-avatar:active)):active {
       transform: scale(0.97);
       transition-duration: 0.1s;
     }
@@ -520,7 +520,7 @@
     }
 
     .author-avatar:active {
-      transform: scale(1);
+      transform: scale(1.2);
       transition-duration: 0.1s;
     }
 
@@ -914,10 +914,9 @@
           let authorsHtml = '';
           if (p.authors && p.authors.length > 0) {
             const imgs = p.authors.map(a =>
-              `<a href="${a.url}" target="_blank" rel="noopener noreferrer">
-                  <img src="${a.avatar}" class="author-avatar" alt="${a.name}" title="${a.name}"
-                  loading="lazy" onerror="this.style.display='none'">
-               </a>`
+              `<a href="${a.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"> 
+                  <img src="${a.avatar}" class="author-avatar" alt="${a.name}" title="${a.name}" loading="lazy" onerror="this.style.display='none'">
+              </a>`
             ).join('');
 
             authorsHtml = `<div class="author-wrapper">${imgs}</div>`;
