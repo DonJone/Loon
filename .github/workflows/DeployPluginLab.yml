@@ -3,19 +3,18 @@ name: Deploy Loon Plugin Lab
 on:
   push:
     paths:
-      # 监听 Plugin 目录变化
       - 'Plugin/**'
+      - 'README.md' # 监听 README 变化
+      - '_config.yml' # 监听主题配置变化
       - '.github/workflows/DeployPluginLab.yml'
       - '.github/scripts/generate_json.py'
   workflow_dispatch:
 
-# 设置权限：允许修改仓库内容(提交json) + 允许部署Pages
 permissions:
   contents: write
   pages: write
   id-token: write
 
-# 这是一个串行任务：先 Build (生成数据)，再 Deploy (部署网站)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,34 +22,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1. 配置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      # 2. 运行脚本，生成最新的 plugins.json
       - name: Generate JSON
         run: python .github/scripts/generate_json.py
 
-      # 3. 将生成的 plugins.json 提交回仓库
       - name: Commit plugins.json
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Auto-update plugins.json [skip ci]"
+          commit_message: "chore: auto-update plugins.json [skip ci]"
           file_pattern: Plugin/plugins.json
           branch: ${{ github.ref }}
 
-      # 4. 准备部署文件：告诉 GitHub Pages 我们要发布 'Plugin' 这个文件夹
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: ./_site
 
-  # 只有上面的 build 任务成功后，才会运行下面的 deploy
   deploy:
     environment:
       name: github-pages
