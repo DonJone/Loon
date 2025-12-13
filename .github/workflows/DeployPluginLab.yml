@@ -5,7 +5,7 @@ on:
     paths:
       # 监听 Plugin 目录变化
       - 'Plugin/**'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/DeployPluginLab.yml'
       - '.github/scripts/generate_json.py'
   workflow_dispatch:
 
