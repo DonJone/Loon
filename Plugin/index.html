@@ -84,8 +84,16 @@
       position: relative;
       z-index: 1;
       overscroll-behavior-y: none;
+      -webkit-user-select: none; 
+      user-select: none;
+      -webkit-touch-callout: none;
     }
 
+    input, textarea {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+    
     /* 防止移动端橡皮筋效果露底 */
     body::before,
     body::after {
@@ -917,15 +925,6 @@
           card.className = 'card';
           card.href = `loon://import?plugin=${p.url}`;
 
-          // --- 点击瞬间强制移除焦点 ---
-          card.addEventListener('click', function(e) {
-             setTimeout(() => {
-                this.blur();
-                this.style.pointerEvents = 'none';
-                setTimeout(() => { this.style.pointerEvents = ''; }, 50);
-             }, 100);
-          });
-          
           const tagsHtml = p.tags.map(tag => `<span class="tag-item">${tag}</span>`).join('');
           const descText = (p.desc === '暂无描述' || p.desc === 'No description available') ? TEXT.cardNoDesc : p.desc;
 
