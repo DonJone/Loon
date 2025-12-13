@@ -513,12 +513,15 @@
       transition: transform 0.2s ease;
     }
 
-    .author-avatar:hover {
-      transform: scale(1.2);
+    @media (hover: hover) {
+      .author-avatar:hover {
+        transform: scale(1.2);
+      }
     }
 
     .author-avatar:active {
       transform: scale(1);
+      transition-duration: 0.1s;
     }
 
     
