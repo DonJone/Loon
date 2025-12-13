@@ -511,9 +511,7 @@
       border: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
       transform: translateY(-1px);
-      transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-      -webkit-tap-highlight-color: transparent; 
-      -webkit-touch-callout: default;
+      transition: transform 0.2s ease;
     }
 
     .author-avatar:hover {
@@ -532,18 +530,6 @@
       }
     }
 
-    @media (hover: hover) {
-      .author-avatar:hover {
-        transform: scale(1.2);
-        z-index: 1;
-      }
-    }
-
-    .author-avatar:active {
-      transform: scale(1.2); 
-      transition-duration: 0.1s;
-    }
-    
     .card-desc {
       font-size: 0.9rem;
       color: var(--text-secondary);
