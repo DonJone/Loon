@@ -1,32 +1,39 @@
 name: Update Plugin Index
 
+# 触发机制配置
 on:
   push:
     paths:
-      - 'Plugin/*.lpx'              
-      - 'scripts/generate_json.py'  
-  workflow_dispatch:                
+      - 'Plugin/*.lpx'
+      - '.github/scripts/generate_json.py'
+  # 允许在 GitHub 网页端手动点击按钮触发
+  workflow_dispatch:
 
+# 授予 Action 写入仓库的权限
 permissions:
   contents: write
 
 jobs:
-  build:
+  update-json:
     runs-on: ubuntu-latest
-
+    
     steps:
+      # 1. 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. 配置 Python 环境
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
+      # 3. 运行 Python 脚本
       - name: Run generation script
         run: |
-          python scripts/generate_json.py
+          python .github/scripts/generate_json.py
 
+      # 4. 检测变动并提交
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
