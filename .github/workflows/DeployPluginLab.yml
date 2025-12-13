@@ -48,8 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 注意：这里填写你的 index.html 所在的目录
-          path: 'Plugin'
+          path: '.'
 
   # 只有上面的 build 任务成功后，才会运行下面的 deploy
   deploy:
