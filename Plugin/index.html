@@ -437,18 +437,27 @@
       height: 100%;
     }
 
-    .card:not(:has(.author-avatar:hover)):hover {
-      transform: translateY(-6px) scale(1.005);
-      box-shadow: var(--shadow-hover);
-      background-color: var(--bg-card-hover);
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-      z-index: 10;
+    @media (hover: hover) {
+      .card:not(:has(.author-avatar:hover)):hover {
+        transform: translateY(-6px) scale(1.005);
+        box-shadow: var(--shadow-hover);
+        background-color: var(--bg-card-hover);
+        backdrop-filter: saturate(180%) blur(10px);
+        -webkit-backdrop-filter: saturate(180%) blur(10px);
+        z-index: 10;
+      }
     }
 
-    .card:not(:has(.author-avatar:active)):active {
-      transform: scale(0.97);
-      transition-duration: 0.1s;
+    @media (hover: none) {
+      .card:not(:has(.author-avatar:active)):active {
+        transform: translateY(-6px) scale(1.005); /* 这里改成了上浮，而不是原来的 scale(0.97) */
+        box-shadow: var(--shadow-hover);
+        background-color: var(--bg-card-hover);
+        backdrop-filter: saturate(180%) blur(10px);
+        -webkit-backdrop-filter: saturate(180%) blur(10px);
+        z-index: 10;
+        transition-duration: 0.1s; /* 按下响应速度 */
+      }
     }
 
     .card-top {
@@ -908,6 +917,15 @@
           card.className = 'card';
           card.href = `loon://import?plugin=${p.url}`;
 
+          // --- 点击瞬间强制移除焦点 ---
+          card.addEventListener('click', function(e) {
+             setTimeout(() => {
+                this.blur();
+                this.style.pointerEvents = 'none';
+                setTimeout(() => { this.style.pointerEvents = ''; }, 50);
+             }, 100);
+          });
+          
           const tagsHtml = p.tags.map(tag => `<span class="tag-item">${tag}</span>`).join('');
           const descText = (p.desc === '暂无描述' || p.desc === 'No description available') ? TEXT.cardNoDesc : p.desc;
 
