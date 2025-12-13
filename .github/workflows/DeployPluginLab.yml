@@ -3,9 +3,11 @@ name: Deploy Loon Plugin Lab
 on:
   push:
     paths:
+      # 监听 Plugin 文件夹内容变动
       - 'Plugin/**'
-      - 'README.md' # 监听 README 变化
-      - '_config.yml' # 监听主题配置变化
+      # 监听根目录 README 变动
+      - 'README.md'
+      # 监听配置和脚本变动
       - '.github/workflows/DeployPluginLab.yml'
       - '.github/scripts/generate_json.py'
   workflow_dispatch:
@@ -22,6 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 1. 运行 Python 生成最新数据
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -37,15 +40,18 @@ jobs:
           file_pattern: Plugin/plugins.json
           branch: ${{ github.ref }}
 
+      # 2. 准备 GitHub Pages 环境
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # 3. 使用 Jekyll 构建网站
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: .
           destination: ./_site
 
+      # 4. 上传构建好的产物
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
