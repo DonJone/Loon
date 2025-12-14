@@ -26,6 +26,10 @@ async function main() {
   try {
     // 解析返回的 JSON 数据
     json = JSON.parse(data);
+
+    // 输出接口原始数据
+    console.log(JSON.stringify(json, null, 2));
+
   } catch {
     return $done({
       title: "IPPure Overview",
