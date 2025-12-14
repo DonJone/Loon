@@ -44,9 +44,30 @@ async function main() {
   const ip = json.ipAddress || json.query || json.ip || "Unknown";
 
   // 位置（拼接城市/地区/国家）
-  const loc = [json.city, json.region, json.country]
-    .filter(Boolean)
-    .join(", ") || "Unknown";
+  let locationParts = [];
+
+  const city = json.city || "";
+  const region = json.region || "";
+  const country = json.country || "";
+
+  if (region || city) {
+    if (region) {
+      locationParts.push(region);
+    } else if (city) {
+      locationParts.push(city);
+    }
+
+    if (country) {
+      locationParts.push(country);
+    }
+
+  } else {
+    if (country) {
+      locationParts.push(country);
+    }
+  }
+
+  const loc = locationParts.join(", ") || "Unknown";
 
   // ISP 信息
   const isp = json.asOrganization || "Unknown";
