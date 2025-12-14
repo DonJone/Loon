@@ -54,16 +54,16 @@ async function main() {
     (json.as && json.as.replace(/[^0-9]/g, "")) ||
     "Unknown";
 
-  // Fraud Score（无等级）
+  // Fraud Score（系数评分）
   const score = json.fraudScore ?? "N/A";
 
-  // 类型标识（Residential vs DC / Broadcast vs Native）
+  // 类型标识（Residential住宅 vs DC机房 / Broadcast广播 vs Native原生）
   const isRes = Boolean(json.isResidential);
   const isBrd = Boolean(json.isBroadcast);
   const typeText = isRes ? "Residential" : "DC";
   const brdText = isBrd ? "Broadcast" : "Native";
 
-  // HTML 输出内容（含空行格式）
+  // HTML 输出内容
   const html = `
 <div style="margin:0;padding:0;font-family:-apple-system;font-size:large;">
 
