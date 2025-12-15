@@ -10,8 +10,5 @@
 #!icon = https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/IPPure.png
 #!date = 2025-12-15 23:00
 
-[Rule]
-DOMAIN-SUFFIX, ippure.com, PROXY
-
 [Script]
 generic script-path = https://raw.githubusercontent.com/sooyaaabo/Loon/main/Script/IPPure/IPPure.js, timeout = 10, tag = IPPure, img-url = leaf
