@@ -61,6 +61,28 @@ async function main() {
   // Fraud Score（系数评分）
   const score = json.fraudScore ?? "N/A";
 
+  // ---- Fraud Score 等级 ----
+  function getScoreLevel(score) {
+    if (score === "N/A") return { text: "Unknown", color: "#000000" };
+
+    const s = Number(score);
+    if (s >= 0 && s <= 15) return { text: "极度纯净", color: "#166534" };
+    if (s >= 16 && s <= 25) return { text: "纯净", color: "#22c55e" };
+    if (s >= 26 && s <= 40) return { text: "中性", color: "#84cc16" };
+    if (s >= 41 && s <= 50) return { text: "轻度风险", color: "#eab308" };
+    if (s >= 51 && s <= 70) return { text: "中度风险", color: "#f97316" };
+    if (s >= 71 && s <= 100) return { text: "极度风险", color: "#dc2626" };
+
+    return { text: "Unknown", color: "#000000" };
+  }
+
+  const level = getScoreLevel(score);
+
+  const scoreHtml =
+    score === "N/A"
+      ? "N/A (Unknown)"
+      : `${score} <span style="color:${level.color};">${level.text}</span>`;
+
   // 类型标识（Residential住宅 vs DC机房 / Broadcast广播 vs Native原生）
   const isRes = Boolean(json.isResidential);
   const isBrd = Boolean(json.isBroadcast);
@@ -82,7 +104,7 @@ async function main() {
 
 <b>ASN:</b> ${asn}<br><br>
 
-<b>Fraud Score:</b> ${score}<br><br>
+<b>Fraud Score:</b> ${scoreHtml}<br><br>
 
 <b>Type:</b> ${typeText} • ${brdText}
 
