@@ -81,8 +81,8 @@ async function main() {
   // ---- 风险系数呈现格式：分数 - 等级 ----
   const scoreHtml =
     score === "N/A"
-      ? `N/A - 未知`
-      : `<span>${score} - <span style="color:${level.color};">${level.text}</span></span>`;
+      ? `<span style="color:#000000;">N/A - 未知</span>`
+      : `<span style="color:${level.color};">${score} - ${level.text}</span>`;
 
   // IP 类型：住宅 vs 数据中心
   const isRes = Boolean(json.isResidential);
