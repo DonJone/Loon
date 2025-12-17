@@ -143,6 +143,10 @@
             "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/Surfboard.png"
         },
         {
+            "name": "IPPure",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/IPPure.png"
+        },
+        {
             "name": "1.1.1.1",
             "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/1.1.1.1-01.png"
         },
@@ -199,8 +203,20 @@
             "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/AppStore-02.png"
         },
         {
-            "name": "AppStore",
-            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/AppStore-03.png"
+            "name": "iAppStore",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/iAppStore-01.png"
+        },
+        {
+            "name": "iAppStore",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/iAppStore-02.png"
+        },
+        {
+            "name": "iAppStore",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/iAppStore-03.png"
+        },
+        {
+            "name": "Asspp",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/Asspp.png"
         },
         {
             "name": "TestFlight",
@@ -877,6 +893,14 @@
         {
             "name": "Tampermonkey",
             "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/Tampermonkey.png"
+        },
+        {
+            "name": "Scriptable",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/Scriptable.png"
+        },
+        {
+            "name": "Scripting",
+            "url": "https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App-Icon/Scripting.png"
         },
         {
             "name": "Currency",

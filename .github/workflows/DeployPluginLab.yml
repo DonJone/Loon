@@ -1,0 +1,69 @@
+name: Deploy Loon Plugin Lab
+
+on:
+  push:
+    paths:
+      # 监听 Plugin 文件夹内容变动
+      - 'Plugin/**'
+      # 监听根目录 README 变动
+      - 'README.md'
+      # 监听配置和脚本变动
+      - '.github/workflows/DeployPluginLab.yml'
+      - '.github/scripts/generate_json.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1. 运行 Python 生成最新数据
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate JSON
+        run: python .github/scripts/generate_json.py
+
+      - name: Commit plugins.json
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update plugins.json [skip ci]"
+          file_pattern: Plugin/plugins.json
+          branch: ${{ github.ref }}
+
+      # 2. 准备 GitHub Pages 环境
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 3. 使用 Jekyll 构建网站
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+
+      # 4. 上传构建好的产物
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
